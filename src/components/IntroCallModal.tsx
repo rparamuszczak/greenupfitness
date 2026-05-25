@@ -23,9 +23,9 @@ export default function IntroCallModal({
   isOpen,
   onClose,
   onSubmit,
-  expertId,
+  expertId: _expertId,
   expertName,
-  clientProfileId,
+  clientProfileId: _clientProfileId,
 }: IntroCallModalProps) {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');

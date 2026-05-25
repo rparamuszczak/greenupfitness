@@ -13,6 +13,10 @@ export interface Expert {
   overview: string;
   created_at?: string;
   updated_at?: string;
+  gym_name?: string;
+  gym_address?: string;
+  gym_maps_url?: string;
+  accepted_benefits?: string[];
 }
 
 export interface ExpertWithMatchStatus extends Expert {

@@ -60,7 +60,7 @@ function SortHeader({
   label,
   field,
   current,
-  dir,
+  dir: _dir,
   onToggle,
   className = '',
 }: {

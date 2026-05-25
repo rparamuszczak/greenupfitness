@@ -271,9 +271,9 @@ export default function Chat() {
                           </span>
                           {message.sender === 'client' && message.id === lastClientMessage?.id && (
                             message.read_at ? (
-                              <CheckCheck className="w-3 h-3 text-emerald-200" title="Read" />
+                              <CheckCheck className="w-3 h-3 text-emerald-200" />
                             ) : (
-                              <Check className="w-3 h-3 text-emerald-300" title="Sent" />
+                              <Check className="w-3 h-3 text-emerald-300" />
                             )
                           )}
                         </div>

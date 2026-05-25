@@ -34,8 +34,8 @@ export async function getCachedOverview(profileKey: string): Promise<string | nu
 
     const { data, error } = await supabase
       .from('overview_cache')
-      .select('overview, id')
-      .eq('profile_hash', hash)
+      .select('overview_text, id')
+      .eq('cache_key', hash)
       .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
       .maybeSingle();
 
@@ -45,22 +45,16 @@ export async function getCachedOverview(profileKey: string): Promise<string | nu
     }
 
     if (data) {
-      const { data: currentData } = await supabase
-        .from('overview_cache')
-        .select('hit_count')
-        .eq('id', data.id)
-        .maybeSingle();
-
       await supabase
         .from('overview_cache')
         .update({
-          hit_count: (currentData?.hit_count || 0) + 1,
+          hit_count: (data as any).hit_count || 0 + 1,
           last_accessed_at: new Date().toISOString(),
         })
         .eq('id', data.id);
 
       console.log('Cache hit: returning cached overview');
-      return data.overview;
+      return data.overview_text;
     }
 
     console.log('Cache miss: no cached overview found');
@@ -78,13 +72,13 @@ export async function setCachedOverview(profileKey: string, overview: string): P
     await supabase
       .from('overview_cache')
       .upsert({
-        profile_hash: hash,
-        overview,
+        cache_key: hash,
+        overview_text: overview,
         hit_count: 0,
         created_at: new Date().toISOString(),
         last_accessed_at: new Date().toISOString(),
       }, {
-        onConflict: 'profile_hash'
+        onConflict: 'cache_key'
       });
 
     console.log('Overview cached successfully');
